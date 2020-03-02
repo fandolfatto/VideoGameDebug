@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,15 @@ namespace VideoGamesMgt
         {
             // Creation of the connection string : where, who
             // Avoid user id and pwd hardcoded
-            ConfigJSONFile confJSONFile = ConfigJSONFile.ReadJSONFile(@"..\..\JSONConfig.json");
+            ConfigJSONFile confJSONFile;
+            try
+            {
+                confJSONFile = ConfigJSONFile.ReadJSONFile(@"..\..\JSONConfig.json");
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                confJSONFile = ConfigJSONFile.ReadJSONFile(@"JSONConfig.json");
+            }
             string connectionString = "SERVER=" + confJSONFile.ServerIP + "; DATABASE=" + confJSONFile.Database + "; UID=" + confJSONFile.User + "; PASSWORD=" + confJSONFile.Password;
             connection = new MySqlConnection(connectionString);
             // Open the SQL connection
